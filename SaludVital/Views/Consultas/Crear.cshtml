@@ -10,38 +10,53 @@
 }
 else
 {
-    <div class="sv-cabecera-ficha">
-        <div>
-            <h1 class="sv-titulo-pagina mb-1">Nueva consulta</h1>
-            <p class="sv-subtitulo mb-0">Para <strong>@mascota.Nombre</strong> (@mascota.Especie @mascota.Raza).</p>
-        </div>
-        <a class="btn sv-btn-secundario" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Volver a la ficha</a>
-    </div>
+    var consultasPrevias = mascota.Consultas?.Count ?? 0;
+    var sintomasIniciales = (Model.Sintomas ?? string.Empty)
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Length;
 
-    <div class="row g-4 align-items-start">
-        <div class="col-12 col-lg-5 order-first order-lg-last">
-            <div class="sv-panel-consulta">
-                <div class="sv-burbuja">
-                    <p class="sv-burbuja-texto">Es importante que tengas en cuenta las notas del dueño de la mascota antes de generar una consulta con un diagnóstico.</p>
-                    <span class="sv-burbuja-cola"></span>
-                </div>
-                <img class="sv-panel-icono" src="~/images/icono-veterinario.png" alt="Veterinario" />
+    <div class="sv-nueva-consulta">
+        <div class="sv-cabecera-ficha">
+            <div>
+                <h1 class="sv-titulo-pagina mb-1">Nueva consulta</h1>
+                <p class="sv-subtitulo mb-0">Para <strong>@mascota.Nombre</strong> (@mascota.Especie @mascota.Raza).</p>
             </div>
+            <a class="btn sv-btn-secondary" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Volver a la ficha</a>
         </div>
-        <div class="col-12 col-lg-7">
-            <div class="sv-ficha">
+
+        <div class="sv-crear-layout">
+            <section class="sv-card" aria-label="Formulario de nueva consulta">
                 <form asp-action="Crear" method="post">
                     <input type="hidden" asp-for="MascotaId" />
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <partial name="_CamposConsulta" model="Model" />
 
-                    <div class="mt-4 d-flex gap-2">
-                        <button type="submit" class="btn sv-btn-primario">Registrar consulta</button>
-                        <a class="btn sv-btn-secundario" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Cancelar</a>
+                    <div class="sv-form-actions">
+                        <button type="submit" class="sv-btn-primary">Registrar consulta</button>
+                        <a class="btn sv-btn-secondary" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Cancelar</a>
                     </div>
                 </form>
-            </div>
+            </section>
+
+            <aside class="sv-side" aria-label="Pulso clínico de @mascota.Nombre">
+                <div class="sv-side-top">
+                    <div class="sv-side-kicker">Antes de continuar</div>
+                    <div class="sv-tip-box">
+                        <p>Es importante que tengas en cuenta las notas del dueño de la mascota antes de generar una consulta con un diagnóstico.</p>
+                    </div>
+                    <h3>Registrando el pulso clínico de @mascota.Nombre</h3>
+                </div>
+                <div class="sv-pulse-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 400 110" preserveAspectRatio="none">
+                        <path class="sv-pulse-line" d="M0,55 L70,55 L95,25 L115,85 L140,15 L160,55 L230,55 L250,38 L270,55 L400,55" />
+                        <circle class="sv-pulse-dot" cx="115" cy="85" r="3" />
+                    </svg>
+                </div>
+                <div class="sv-side-stats">
+                    <div><b>@consultasPrevias</b><span>Consultas previas</span></div>
+                    <div><b data-sintomas-contador>@sintomasIniciales</b><span>Síntomas activos</span></div>
+                </div>
+            </aside>
         </div>
     </div>
 }

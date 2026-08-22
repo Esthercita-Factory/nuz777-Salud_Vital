@@ -10,27 +10,55 @@
 }
 else
 {
-    <div class="sv-cabecera-ficha">
-        <div>
-            <h1 class="sv-titulo-pagina mb-1">Editar consulta</h1>
-            <p class="sv-subtitulo mb-0">Para <strong>@mascota.Nombre</strong> (@mascota.Especie @mascota.Raza).</p>
-        </div>
-        <a class="btn sv-btn-secundario" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Volver a la ficha</a>
-    </div>
+    var consultasPrevias = mascota.Consultas?.Count ?? 0;
+    var sintomasIniciales = (Model.Sintomas ?? string.Empty)
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Length;
 
-    <div class="sv-ficha">
-        <form asp-action="Editar" method="post">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="MascotaId" />
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-            <partial name="_CamposConsulta" model="Model" />
-
-            <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn sv-btn-primario">Guardar cambios</button>
-                <a class="btn sv-btn-secundario" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Cancelar</a>
+    <div class="sv-nueva-consulta">
+        <div class="sv-cabecera-ficha">
+            <div>
+                <h1 class="sv-titulo-pagina mb-1">Editar consulta</h1>
+                <p class="sv-subtitulo mb-0">De <strong>@mascota.Nombre</strong> (@mascota.Especie @mascota.Raza) del @Model.Fecha.ToString("dd/MM/yyyy").</p>
             </div>
-        </form>
+            <a class="btn sv-btn-secondary" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Volver a la ficha</a>
+        </div>
+
+        <div class="sv-crear-layout">
+            <section class="sv-card" aria-label="Formulario de edición de consulta">
+                <form asp-action="Editar" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="MascotaId" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <partial name="_CamposConsulta" model="Model" />
+
+                    <div class="sv-form-actions">
+                        <button type="submit" class="sv-btn-primary">Guardar cambios</button>
+                        <a class="btn sv-btn-secondary" asp-controller="Mascotas" asp-action="Detalles" asp-route-id="@mascota.Id">Cancelar</a>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="sv-side" aria-label="Pulso clínico de @mascota.Nombre">
+                <div class="sv-side-top">
+                    <div class="sv-side-kicker">Antes de continuar</div>
+                    <div class="sv-tip-box">
+                        <p>Estás ajustando una consulta existente. Revisa que el diagnóstico y el tratamiento reflejen lo observado en la consulta.</p>
+                    </div>
+                    <h3>Editando el pulso clínico de @mascota.Nombre</h3>
+                </div>
+                <div class="sv-pulse-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 400 110" preserveAspectRatio="none">
+                        <path class="sv-pulse-line" d="M0,55 L70,55 L95,25 L115,85 L140,15 L160,55 L230,55 L250,38 L270,55 L400,55" />
+                        <circle class="sv-pulse-dot" cx="115" cy="85" r="3" />
+                    </svg>
+                </div>
+                <div class="sv-side-stats">
+                    <div><b>@consultasPrevias</b><span>Consultas registradas</span></div>
+                    <div><b data-sintomas-contador>@sintomasIniciales</b><span>Síntomas activos</span></div>
+                </div>
+            </aside>
+        </div>
     </div>
 }
 

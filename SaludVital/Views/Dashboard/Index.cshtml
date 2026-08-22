@@ -30,6 +30,21 @@
     </div>
 </div>
 
+<div class="sv-detalles-pulse-banner">
+    <div class="sv-detalles-pulse-content">
+        <div class="sv-detalles-pulse-text">
+            <span class="sv-detalles-pulse-kicker">Signos vitales</span>
+            <p class="sv-detalles-pulse-phrase">La clínica late hoy con @mascotasActivas paciente@(mascotasActivas == 1 ? "" : "s") activo@(mascotasActivas == 1 ? "" : "s") y @totalConsultas consulta@(totalConsultas == 1 ? "" : "s").</p>
+        </div>
+        <div class="sv-detalles-pulse-ekg">
+            <svg viewBox="0 0 500 80" preserveAspectRatio="none" aria-hidden="true">
+                <path class="sv-detalles-pulse-line" d="M0,40 L80,40 L105,15 L125,65 L145,10 L165,55 L185,40 L280,40 L305,20 L325,60 L345,5 L365,50 L385,40 L500,40" />
+                <circle class="sv-detalles-pulse-dot" cx="145" cy="10" r="3" />
+            </svg>
+        </div>
+    </div>
+</div>
+
 <div class="sv-dashboard-velocimetros mb-4">
     <div class="sv-speedometer-card">
         <div class="sv-speedometer" style="--sv-speed: @($"{gradosActivas.ToString(System.Globalization.CultureInfo.InvariantCulture)}deg");">
